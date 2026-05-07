@@ -1,0 +1,68 @@
+[
+  {
+    "id": "piel-otono",
+    "num": "01",
+    "brewery": "Pura Vida",
+    "name": "Piel de Otoño",
+    "stats": "American IPA · 6.8%",
+    "price": "$8",
+    "color": "var(--chalk-blue)",
+    "breweryColor": "var(--chalk-pink)",
+    "details": [
+      "Estilo: American IPA",
+      "ABV: 6.8%",
+      "Cervecería: Pura Vida (PR)",
+      "Notas: tropical, lúpulo americano, final amargo balanceado"
+    ]
+  },
+  {
+    "id": "cocotero",
+    "num": "02",
+    "brewery": "Box Lab",
+    "name": "Cocotero",
+    "stats": "Pumpkin Spice Latte Stout · 4.8%",
+    "price": "$8",
+    "color": "var(--chalk-white)",
+    "breweryColor": "var(--chalk-blue)",
+    "details": [
+      "Estilo: Pumpkin Spice Latte Stout",
+      "ABV: 4.8%",
+      "Cervecería: BOX LAB (PR)",
+      "Notas: calabaza, canela, nuez moscada, espresso",
+      "Edición de temporada"
+    ]
+  },
+  {
+    "id": "gose",
+    "num": "03",
+    "brewery": "One Well",
+    "name": "Only Gose to Show",
+    "stats": "Sour · Lime Salt · 4.4%",
+    "price": "$8.50",
+    "color": "var(--chalk-green)",
+    "breweryColor": "var(--chalk-pink)",
+    "details": [
+      "Estilo: Gose (Sour Lime Salt)",
+      "ABV: 4.4%",
+      "Cervecería: One Well",
+      "Notas: lima fresca, sal de mar, acidez ligera"
+    ]
+  },
+  {
+    "id": "monte-mar",
+    "num": "04",
+    "brewery": "Box Lab",
+    "name": "Monte y Mar",
+    "stats": "Amber Ale · 5.1% · 12oz",
+    "price": "$7.50",
+    "color": "var(--chalk-orange)",
+    "breweryColor": "var(--chalk-yellow)",
+    "details": [
+      "Estilo: Amber Ale",
+      "ABV: 5.1%",
+      "Tamaño: 12oz",
+      "Cervecería: BOX LAB (PR)",
+      "Notas: malta caramelo, lúpulo cítrico"
+    ]
+  }
+]

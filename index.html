@@ -1336,37 +1336,63 @@ const MENU = {
 };
 
 // CHALKBOARD CERVEZAS
+// Datos en cervezas.json (editable por el bot de Telegram).
+// Si fetch falla, usa MENU.cervezas como fallback embebido.
 const chalkList = document.getElementById('chalkList');
-MENU.cervezas.forEach((b, i) => {
-  const row = document.createElement('div');
-  row.className = 'chalk-row';
-  row.innerHTML = `
-    <div class="chalk-num">${b.num}</div>
-    <div class="chalk-info">
-      <div class="chalk-brewery" style="color: ${b.breweryColor}">${b.brewery}</div>
-      <div class="chalk-name" style="color: ${b.color}">${b.name}</div>
-      <div class="chalk-stats">${b.stats}</div>
-    </div>
-    <div class="chalk-price">${b.price}</div>
-    <button class="mini-add" data-add="cerveza:${b.id}" aria-label="Agregar ${b.name}">+</button>
-  `;
-  row.addEventListener('click', (e) => {
-    if (e.target.closest('.mini-add')) return;
-    openModal(b.name, b.stats, b.details);
+function renderCervezas(beers) {
+  chalkList.innerHTML = '';
+  beers.forEach((b, i) => {
+    const row = document.createElement('div');
+    row.className = 'chalk-row';
+    row.innerHTML = `
+      <div class="chalk-num">${b.num}</div>
+      <div class="chalk-info">
+        <div class="chalk-brewery" style="color: ${b.breweryColor}">${b.brewery}</div>
+        <div class="chalk-name" style="color: ${b.color}">${b.name}</div>
+        <div class="chalk-stats">${b.stats}</div>
+      </div>
+      <div class="chalk-price">${b.price}</div>
+      <button class="mini-add" data-add="cerveza:${b.id}" aria-label="Agregar ${b.name}">+</button>
+    `;
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('.mini-add')) return;
+      openModal(b.name, b.stats, b.details);
+    });
+    const cMiniAdd = row.querySelector('.mini-add');
+    cMiniAdd.addEventListener('click', (e) => { e.stopPropagation(); addToOrder(cMiniAdd.dataset.add); });
+    chalkList.appendChild(row);
+    if (i < beers.length - 1) {
+      const div = document.createElement('div');
+      div.className = 'chalk-divider';
+      chalkList.appendChild(div);
+    }
   });
-  const cMiniAdd = row.querySelector('.mini-add');
-  cMiniAdd.addEventListener('click', (e) => { e.stopPropagation(); addToOrder(cMiniAdd.dataset.add); });
-  chalkList.appendChild(row);
-  if (i < MENU.cervezas.length - 1) {
-    const div = document.createElement('div');
-    div.className = 'chalk-divider';
-    chalkList.appendChild(div);
-  }
-});
-const footnote = document.createElement('div');
-footnote.className = 'chalk-footnote';
-footnote.textContent = '...y más en rotación. Pregúntale al bartender ✨';
-chalkList.appendChild(footnote);
+  const footnote = document.createElement('div');
+  footnote.className = 'chalk-footnote';
+  footnote.textContent = '...y más en rotación. Pregúntale al bartender ✨';
+  chalkList.appendChild(footnote);
+}
+function rebuildBeerRegistry(beers) {
+  Object.keys(ORDER_REGISTRY)
+    .filter(k => k.startsWith('cerveza:'))
+    .forEach(k => delete ORDER_REGISTRY[k]);
+  beers.forEach(b => {
+    ORDER_REGISTRY['cerveza:' + b.id] = { cat: b.brewery, name: b.name, price: parsePrice(b.price) };
+  });
+}
+renderCervezas(MENU.cervezas);
+// Cache-bust para que el bot vea cambios al instante
+fetch('./cervezas.json?t=' + Date.now())
+  .then(r => r.ok ? r.json() : null)
+  .then(beers => {
+    if (Array.isArray(beers) && beers.length > 0) {
+      MENU.cervezas = beers;
+      renderCervezas(beers);
+      rebuildBeerRegistry(beers);
+      renderOrder();
+    }
+  })
+  .catch(() => {});
 
 // SIDES — All as SVG (fries, batata, onion rings)
 const sidesList = document.getElementById('sidesList');
