@@ -788,6 +788,237 @@
     .reveal, .reveal-stagger > * { opacity: 1; transform: none; transition: none; }
     .scroll-indicator::after { animation: none; }
   }
+
+  /* ============ ORDER BUBBLE (botón flotante) ============ */
+  #order-bubble {
+    position: fixed;
+    left: 50%;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    transform: translateX(-50%) translateY(120%);
+    z-index: 250;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--amber);
+    color: var(--bg-deep);
+    padding: 14px 22px;
+    border-radius: 100px;
+    box-shadow: 0 16px 40px rgba(212, 160, 23, 0.45), 0 0 0 1px rgba(0,0,0,0.1);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.3s;
+    width: calc(100% - 32px);
+    max-width: 398px;
+    justify-content: center;
+  }
+  #order-bubble.show { transform: translateX(-50%) translateY(0); }
+  #order-bubble:active { transform: translateX(-50%) translateY(2px); box-shadow: 0 8px 20px rgba(212, 160, 23, 0.35); }
+  #order-bubble .bubble-emoji { font-size: 18px; }
+  #order-bubble .bubble-count { background: var(--bg-deep); color: var(--amber); padding: 3px 10px; border-radius: 100px; font-size: 12px; min-width: 26px; text-align: center; }
+  #order-bubble .bubble-total { font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: 0.04em; }
+  #order-bubble .bubble-arrow { opacity: 0.7; }
+
+  /* ============ ORDER SHEET ============ */
+  #order-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10, 8, 6, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  #order-overlay.open { opacity: 1; pointer-events: auto; }
+  #order-sheet {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: 100%; max-width: 430px;
+    background: var(--bg-warm);
+    border-radius: 28px 28px 0 0;
+    padding: 18px 22px 30px;
+    padding-bottom: max(30px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 88vh;
+    display: flex; flex-direction: column;
+  }
+  #order-overlay.open #order-sheet { transform: translateX(-50%) translateY(0); }
+  .sheet-handle { width: 38px; height: 4px; background: var(--muted); border-radius: 2px; margin: 0 auto 18px; }
+  .sheet-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .sheet-title { font-family: 'Anton', sans-serif; font-size: 30px; color: var(--cream); letter-spacing: 0.02em; }
+  .sheet-clear { background: none; border: none; color: var(--cream-dim); font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; padding: 4px 0; }
+  .sheet-clear:active { color: var(--brick); }
+  .sheet-table { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--amber); margin-bottom: 18px; letter-spacing: 0.05em; }
+
+  #order-items { list-style: none; flex: 1; overflow-y: auto; margin: 0 -22px; padding: 0 22px; }
+  .order-row { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+  .order-row:last-child { border-bottom: none; }
+  .order-info { min-width: 0; }
+  .order-cat { font-family: 'Outfit', sans-serif; font-size: 9px; letter-spacing: 0.25em; color: var(--amber); text-transform: uppercase; margin-bottom: 3px; }
+  .order-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500; color: var(--cream); line-height: 1.2; }
+  .order-qty { display: flex; align-items: center; gap: 4px; background: var(--bg-deep); border: 1px solid var(--line); border-radius: 100px; padding: 2px; }
+  .qty-btn { width: 28px; height: 28px; border: none; background: transparent; color: var(--cream); font-size: 18px; cursor: pointer; border-radius: 50%; line-height: 1; padding: 0; }
+  .qty-btn:active { background: var(--amber); color: var(--bg-deep); }
+  .qty-num { min-width: 22px; text-align: center; font-family: 'Anton', sans-serif; font-size: 16px; color: var(--cream); }
+  .order-price { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--amber); letter-spacing: 0.02em; min-width: 50px; text-align: right; }
+
+  .order-empty { text-align: center; padding: 40px 20px; color: var(--cream-dim); font-family: 'Fraunces', serif; font-style: italic; }
+
+  .sheet-footer { margin-top: 16px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .sheet-total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .sheet-total-label { font-family: 'Outfit', sans-serif; font-size: 12px; letter-spacing: 0.3em; color: var(--cream-dim); text-transform: uppercase; }
+  .sheet-total-amount { font-family: 'Anton', sans-serif; font-size: 36px; color: var(--cream); letter-spacing: 0.02em; }
+  .sheet-total-amount .currency { font-size: 20px; vertical-align: super; color: var(--amber); margin-right: 4px; }
+  .show-bartender-btn {
+    width: 100%;
+    background: var(--amber);
+    color: var(--bg-deep);
+    border: none;
+    padding: 18px;
+    border-radius: 16px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.4);
+  }
+  .show-bartender-btn:active { transform: scale(0.98); }
+  .show-bartender-btn:disabled { background: var(--muted); color: var(--cream-dim); box-shadow: none; cursor: not-allowed; }
+
+  /* ============ BARTENDER VIEW (fullscreen) ============ */
+  #bartender-view {
+    position: fixed; inset: 0;
+    background: var(--cream);
+    color: var(--bg-deep);
+    z-index: 400;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s;
+    overflow-y: auto;
+    padding: 22px 22px 40px;
+    padding-top: max(22px, env(safe-area-inset-top));
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+  #bartender-view.open { opacity: 1; pointer-events: auto; }
+  .bartender-close {
+    position: absolute;
+    top: max(14px, env(safe-area-inset-top));
+    right: 14px;
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--bg-deep);
+    background: transparent;
+    border-radius: 50%;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--bg-deep);
+  }
+  .bartender-header {
+    text-align: center;
+    padding: 16px 0 22px;
+    border-bottom: 2px solid var(--bg-deep);
+    margin-bottom: 22px;
+  }
+  .bartender-emblem { font-family: 'Anton', sans-serif; font-size: 14px; letter-spacing: 0.4em; color: var(--bg-deep); }
+  .bartender-emblem .dot { color: var(--brick); }
+  .bartender-mesa-tag { display: inline-block; margin-top: 14px; padding: 8px 22px; background: var(--bg-deep); color: var(--cream); font-family: 'Anton', sans-serif; font-size: 22px; letter-spacing: 0.15em; border-radius: 4px; }
+  .bartender-time { font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: #6a5d48; margin-top: 12px; letter-spacing: 0.05em; }
+
+  .bartender-orden-label {
+    text-align: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+  }
+  .bartender-instructions {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #6a5d48;
+    margin-bottom: 24px;
+  }
+  .bartender-items { margin-bottom: 28px; }
+  .b-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1.5px dashed rgba(10, 8, 6, 0.25);
+  }
+  .b-qty {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    color: var(--brick);
+    line-height: 1;
+    min-width: 60px;
+  }
+  .b-info { line-height: 1.15; }
+  .b-cat {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #6a5d48;
+    margin-bottom: 4px;
+  }
+  .b-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    color: var(--bg-deep);
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+  }
+  .b-price {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--bg-deep);
+  }
+  .bartender-total-row {
+    margin-top: 20px;
+    padding: 22px 0;
+    border-top: 3px solid var(--bg-deep);
+    border-bottom: 3px solid var(--bg-deep);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .bartender-total-label { font-family: 'Anton', sans-serif; font-size: 30px; letter-spacing: 0.18em; }
+  .bartender-total-amount { font-family: 'Anton', sans-serif; font-size: 56px; line-height: 1; }
+  .bartender-total-amount .currency { font-size: 30px; vertical-align: super; margin-right: 4px; color: var(--brick); }
+  .bartender-foot {
+    margin-top: 24px;
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #6a5d48;
+  }
+
+  /* Mini "+" para cervezas y sides en chalkboard/lista */
+  .mini-add {
+    border: none;
+    background: var(--amber);
+    color: var(--bg-deep);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(212, 160, 23, 0.3);
+    flex-shrink: 0;
+    margin-left: 10px;
+    padding: 0;
+  }
+  .mini-add:active { transform: scale(0.92); }
+  .chalk-row { gap: 10px; align-items: center; }
+  .side-row { align-items: center; }
 </style>
 </head>
 <body>
@@ -830,7 +1061,7 @@
       <div class="special-actions">
         <div class="food-price"><span class="currency">$</span>12</div>
         <button class="details-btn" data-modal="alitas">Detalles</button>
-        <button class="add-btn" data-add>Agregar</button>
+        <button class="add-btn" data-add="alitas">Agregar</button>
       </div>
     </div>
   </section>
@@ -871,7 +1102,7 @@
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>9</div>
         <button class="details-btn" data-modal="og">Detalles</button>
-        <button class="add-btn" data-add>Agregar</button>
+        <button class="add-btn" data-add="og">Agregar</button>
       </div>
     </div>
   </section>
@@ -891,7 +1122,7 @@
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>9</div>
         <button class="details-btn" data-modal="dirty">Detalles</button>
-        <button class="add-btn" data-add>Agregar</button>
+        <button class="add-btn" data-add="dirty">Agregar</button>
       </div>
     </div>
   </section>
@@ -911,7 +1142,7 @@
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>9</div>
         <button class="details-btn" data-modal="katsu">Detalles</button>
-        <button class="add-btn" data-add>Agregar</button>
+        <button class="add-btn" data-add="katsu">Agregar</button>
       </div>
     </div>
   </section>
@@ -942,7 +1173,7 @@
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>7</div>
         <button class="details-btn" data-modal="croquetas">Detalles</button>
-        <button class="add-btn" data-add>Agregar</button>
+        <button class="add-btn" data-add="croquetas">Agregar</button>
       </div>
     </div>
   </section>
@@ -978,6 +1209,53 @@
 
   <!-- TOAST -->
   <div id="toast">Agregado a tu orden</div>
+
+  <!-- ORDER BUBBLE -->
+  <div id="order-bubble" role="button" aria-label="Ver orden">
+    <span class="bubble-emoji">🍺</span>
+    <span class="bubble-count" id="bubble-count">0</span>
+    <span>Tu orden</span>
+    <span class="bubble-total"><span class="currency" style="font-size:13px;opacity:.7">$</span><span id="bubble-total">0</span></span>
+    <span class="bubble-arrow">↑</span>
+  </div>
+
+  <!-- ORDER SHEET -->
+  <div id="order-overlay">
+    <div id="order-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h2 class="sheet-title">Tu orden</h2>
+        <button class="sheet-clear" id="clear-order">Vaciar</button>
+      </div>
+      <div class="sheet-table">Mesa 07 · El Tap Beer Co.</div>
+      <ul id="order-items"></ul>
+      <div class="sheet-footer">
+        <div class="sheet-total">
+          <span class="sheet-total-label">Total</span>
+          <span class="sheet-total-amount"><span class="currency">$</span><span id="sheet-total">0</span></span>
+        </div>
+        <button class="show-bartender-btn" id="show-bartender">Mostrar al bartender</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARTENDER VIEW (fullscreen) -->
+  <div id="bartender-view">
+    <button class="bartender-close" id="close-bartender" aria-label="Cerrar">×</button>
+    <div class="bartender-header">
+      <div class="bartender-emblem">EL TAP<span class="dot"> · </span>BEER CO.</div>
+      <div class="bartender-mesa-tag" id="bartender-mesa">MESA 07</div>
+      <div class="bartender-time" id="bartender-time"></div>
+    </div>
+    <div class="bartender-orden-label">ORDEN</div>
+    <div class="bartender-instructions">Para el bartender — léelo o pásale el celular</div>
+    <div class="bartender-items" id="bartender-items"></div>
+    <div class="bartender-total-row">
+      <span class="bartender-total-label">TOTAL</span>
+      <span class="bartender-total-amount"><span class="currency">$</span><span id="bartender-total">0</span></span>
+    </div>
+    <div class="bartender-foot">¡Salud! 🍻</div>
+  </div>
 
 </div>
 
@@ -1070,8 +1348,14 @@ MENU.cervezas.forEach((b, i) => {
       <div class="chalk-stats">${b.stats}</div>
     </div>
     <div class="chalk-price">${b.price}</div>
+    <button class="mini-add" data-add="cerveza:${b.id}" aria-label="Agregar ${b.name}">+</button>
   `;
-  row.addEventListener('click', () => openModal(b.name, b.stats, b.details));
+  row.addEventListener('click', (e) => {
+    if (e.target.closest('.mini-add')) return;
+    openModal(b.name, b.stats, b.details);
+  });
+  const cMiniAdd = row.querySelector('.mini-add');
+  cMiniAdd.addEventListener('click', (e) => { e.stopPropagation(); addToOrder(cMiniAdd.dataset.add); });
   chalkList.appendChild(row);
   if (i < MENU.cervezas.length - 1) {
     const div = document.createElement('div');
@@ -1128,8 +1412,14 @@ MENU.sides.forEach(item => {
       <div class="side-desc">${item.desc}</div>
     </div>
     <div class="side-price">${item.price}</div>
+    <button class="mini-add" data-add="side:${item.id}" aria-label="Agregar ${item.name}">+</button>
   `;
-  row.addEventListener('click', () => openModal(item.name, item.desc, item.details));
+  row.addEventListener('click', (e) => {
+    if (e.target.closest('.mini-add')) return;
+    openModal(item.name, item.desc, item.details);
+  });
+  const sMiniAdd = row.querySelector('.mini-add');
+  sMiniAdd.addEventListener('click', (e) => { e.stopPropagation(); addToOrder(sMiniAdd.dataset.add); });
   sidesList.appendChild(row);
 });
 
@@ -1191,12 +1481,156 @@ function showToast(msg = 'Agregado a tu orden') {
   toastTimeout = setTimeout(() => toast.classList.remove('show'), 1800);
   if (navigator.vibrate) navigator.vibrate(15);
 }
-document.querySelectorAll('[data-add]').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    showToast();
-  });
+// =================================================================
+//   ORDER CART (carrito + comanda al bartender)
+// =================================================================
+const ORDER_REGISTRY = {
+  alitas:    { cat: 'Especial',    name: 'Alitas de la casa',     price: 12 },
+  og:        { cat: 'Smashburger', name: 'EL OG',                 price: 9  },
+  dirty:     { cat: 'Smashburger', name: 'EL Loíza Dirty',        price: 9  },
+  katsu:     { cat: 'Sandwich',    name: 'Chicken Katsu',         price: 9  },
+  croquetas: { cat: 'Para picar',  name: 'Croquetas de Jamón (5u)', price: 7 }
+};
+let order = [];
+
+function parsePrice(s) { return parseFloat(String(s).replace(/[^\d.]/g, '')) || 0; }
+function fmtPrice(n) { return n % 1 === 0 ? String(n) : n.toFixed(2); }
+
+MENU.cervezas.forEach(b => {
+  ORDER_REGISTRY['cerveza:' + b.id] = { cat: b.brewery, name: b.name, price: parsePrice(b.price) };
 });
+MENU.sides.forEach(item => {
+  ORDER_REGISTRY['side:' + item.id] = { cat: 'Side', name: item.name, price: parsePrice(item.price) };
+});
+
+function calcCount() { return order.reduce((s, it) => s + it.qty, 0); }
+function calcTotal() { return order.reduce((s, it) => s + (ORDER_REGISTRY[it.key]?.price || 0) * it.qty, 0); }
+
+function saveOrder() { try { localStorage.setItem('elTapOrder', JSON.stringify(order)); } catch (e) {} }
+function loadOrder() {
+  try {
+    const s = localStorage.getItem('elTapOrder');
+    if (s) order = (JSON.parse(s) || []).filter(it => ORDER_REGISTRY[it.key]);
+  } catch (e) { order = []; }
+}
+
+function addToOrder(key) {
+  if (!ORDER_REGISTRY[key]) return;
+  const existing = order.find(it => it.key === key);
+  if (existing) existing.qty++;
+  else order.push({ key, qty: 1 });
+  saveOrder();
+  renderOrder();
+  showToast(`Agregado: ${ORDER_REGISTRY[key].name}`);
+}
+
+function changeQty(key, delta) {
+  const it = order.find(o => o.key === key);
+  if (!it) return;
+  it.qty += delta;
+  if (it.qty <= 0) order = order.filter(o => o.key !== key);
+  saveOrder();
+  renderOrder();
+}
+
+function clearOrder() {
+  order = [];
+  saveOrder();
+  renderOrder();
+}
+
+function renderOrder() {
+  const count = calcCount();
+  const total = calcTotal();
+  const bubble = document.getElementById('order-bubble');
+  document.getElementById('bubble-count').textContent = count;
+  document.getElementById('bubble-total').textContent = fmtPrice(total);
+  bubble.classList.toggle('show', count > 0);
+
+  const list = document.getElementById('order-items');
+  list.innerHTML = '';
+  if (order.length === 0) {
+    list.innerHTML = '<li class="order-empty">Aún no has agregado nada.<br>Pulsa <strong style="color:var(--amber)">Agregar</strong> o <strong style="color:var(--amber)">+</strong> en cualquier item del menú.</li>';
+  } else {
+    order.forEach(it => {
+      const reg = ORDER_REGISTRY[it.key];
+      if (!reg) return;
+      const li = document.createElement('li');
+      li.className = 'order-row';
+      li.innerHTML = `
+        <div class="order-info">
+          <div class="order-cat">${reg.cat}</div>
+          <div class="order-name">${reg.name}</div>
+        </div>
+        <div class="order-qty">
+          <button class="qty-btn" data-qty="-" data-key="${it.key}" aria-label="Restar">−</button>
+          <span class="qty-num">${it.qty}</span>
+          <button class="qty-btn" data-qty="+" data-key="${it.key}" aria-label="Sumar">+</button>
+        </div>
+        <div class="order-price">$${fmtPrice(reg.price * it.qty)}</div>
+      `;
+      list.appendChild(li);
+    });
+  }
+  document.getElementById('sheet-total').textContent = fmtPrice(total);
+  document.getElementById('show-bartender').disabled = order.length === 0;
+}
+
+function openOrder() { document.getElementById('order-overlay').classList.add('open'); }
+function closeOrder() { document.getElementById('order-overlay').classList.remove('open'); }
+
+function openBartender() {
+  if (order.length === 0) return;
+  const items = document.getElementById('bartender-items');
+  items.innerHTML = '';
+  order.forEach(it => {
+    const reg = ORDER_REGISTRY[it.key];
+    if (!reg) return;
+    const div = document.createElement('div');
+    div.className = 'b-item';
+    div.innerHTML = `
+      <div class="b-qty">${it.qty}×</div>
+      <div class="b-info">
+        <div class="b-cat">${reg.cat}</div>
+        <div class="b-name">${reg.name}</div>
+      </div>
+      <div class="b-price">$${fmtPrice(reg.price * it.qty)}</div>
+    `;
+    items.appendChild(div);
+  });
+  document.getElementById('bartender-total').textContent = fmtPrice(calcTotal());
+  const now = new Date();
+  const time = now.toLocaleTimeString('es-PR', { hour: 'numeric', minute: '2-digit', hour12: true });
+  document.getElementById('bartender-time').textContent = `Pedido a las ${time}`;
+  document.getElementById('bartender-view').classList.add('open');
+  closeOrder();
+  if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+}
+function closeBartender() { document.getElementById('bartender-view').classList.remove('open'); }
+
+// Hardcoded add buttons (no event delegation conflicts here)
+document.querySelectorAll('.add-btn[data-add]').forEach(btn => {
+  btn.addEventListener('click', (e) => { e.stopPropagation(); addToOrder(btn.dataset.add); });
+});
+// Order panel interactions
+document.getElementById('order-bubble').addEventListener('click', openOrder);
+document.getElementById('order-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'order-overlay') closeOrder();
+});
+document.getElementById('order-items').addEventListener('click', (e) => {
+  const qBtn = e.target.closest('[data-qty]');
+  if (!qBtn) return;
+  changeQty(qBtn.dataset.key, qBtn.dataset.qty === '+' ? 1 : -1);
+});
+document.getElementById('clear-order').addEventListener('click', () => {
+  if (order.length === 0) return;
+  if (confirm('¿Vaciar tu orden?')) clearOrder();
+});
+document.getElementById('show-bartender').addEventListener('click', openBartender);
+document.getElementById('close-bartender').addEventListener('click', closeBartender);
+
+loadOrder();
+renderOrder();
 
 // SCROLL EFFECTS
 const topBar = document.getElementById('topBar');
