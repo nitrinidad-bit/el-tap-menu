@@ -431,15 +431,15 @@
 
   /* ============ FOOD: LOÍZA DIRTY ============ */
   .food-dirty { position: relative; margin-top: 50px; display: grid; grid-template-columns: 60px 1fr; gap: 0; }
-  .food-dirty-side { position: relative; z-index: 3; display: flex; align-items: flex-start; padding-top: 0; padding-left: 14px; }
+  .food-dirty-side { position: relative; z-index: 3; display: flex; align-items: flex-start; padding-top: 0; padding-left: 14px; margin-top: -36px; }
   .food-dirty-side-text {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     font-family: 'Anton', sans-serif;
-    font-size: 44px;
+    font-size: 36px;
     line-height: 0.9;
     color: var(--cream);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     text-shadow: 0 0 20px rgba(0,0,0,0.5);
   }
   .food-dirty-side-text .accent { color: var(--gochujang); }
@@ -1097,11 +1097,11 @@
   <section class="food-og">
     <div class="food-og-photo">
       <div class="chalk-note-og">the classic</div>
-      <div class="food-og-tag">SIGNATURE · HAWAIIAN BUN</div>
+      <div class="food-og-tag">SIGNATURE · BUN HAWAIIAN</div>
     </div>
     <div class="food-og-content reveal">
       <h2 class="food-og-title">EL OG</h2>
-      <div class="food-og-script">Pan Hawaiano Pepín</div>
+      <div class="food-og-script">Bun Hawaiian</div>
       <p class="food-og-desc">Smashburger con doble patty 80/20 de 3oz, queso americano, cebolla en mantequilla y nuestro OG sauce casero.</p>
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>9</div>
@@ -1122,7 +1122,7 @@
     </div>
     <div class="food-dirty-content reveal">
       <div class="food-dirty-script">Más sucia, más sabrosa.</div>
-      <p class="food-dirty-desc">Smashburger con doble patty, queso, cebolla en mantequilla y nuestra house Dirty Sauce — mayo, mostaza, sweet relish, worcester, pickle juice y paprika. En pan Hawaiano Pepín.</p>
+      <p class="food-dirty-desc">Smashburger con doble patty, queso, cebolla en mantequilla y nuestra house Dirty Sauce — mayo, mostaza, sweet relish, worcester, pickle juice y paprika. En Bun Hawaiian.</p>
       <div class="food-actions">
         <div class="food-price"><span class="currency">$</span>9</div>
         <button class="details-btn" data-modal="dirty">Detalles</button>
@@ -1134,7 +1134,7 @@
   <!-- FOOD: KATSU -->
   <section class="food-katsu">
     <div class="food-katsu-stack">
-      <div class="food-katsu-tag">BRIOCHE PEPÍN</div>
+      <div class="food-katsu-tag">BRIOCHE BUN</div>
       <div class="food-katsu-photo-main"></div>
       <div class="food-katsu-photo-detail"></div>
       <div class="chalk-note-katsu">crispy boi</div>
@@ -1278,9 +1278,9 @@ const MENU = {
   },
   og: {
     title: 'El OG',
-    subtitle: 'Hawaiian Pepín · OG Sauce',
+    subtitle: 'Bun Hawaiian · OG Sauce',
     details: [
-      'Pan: Hawaiano Pepín (dulce y suave)',
+      'Pan: Bun Hawaiian (dulce y suave)',
       '2 patties smash de res 80/20 · 3oz cada una',
       'Queso americano derretido',
       'Cebolla en mantequilla',
@@ -1289,9 +1289,9 @@ const MENU = {
   },
   dirty: {
     title: 'El Loíza Dirty',
-    subtitle: 'Hawaiian Pepín · Dirty Sauce',
+    subtitle: 'Bun Hawaiian · Dirty Sauce',
     details: [
-      'Pan: Hawaiano Pepín (dulce y suave)',
+      'Pan: Bun Hawaiian (dulce y suave)',
       '2 patties smash de res 80/20 · 3oz cada una',
       'Queso americano derretido',
       'Cebolla en mantequilla',
@@ -1300,9 +1300,9 @@ const MENU = {
   },
   katsu: {
     title: 'Chicken Katsu',
-    subtitle: 'Brioche Pepín · Spicy Mayo',
+    subtitle: 'Brioche Bun · Spicy Mayo',
     details: [
-      'Pan: Brioche Pepín (firme, aguanta el katsu)',
+      'Pan: Brioche Bun (firme, aguanta el katsu)',
       'Cadera de pollo butterfly cut',
       'Brine: cerveza, aceite de sésamo, tamari',
       'Empanizado: harina sazonada → egg wash → panko',
