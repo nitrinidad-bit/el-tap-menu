@@ -20,15 +20,22 @@ SOURCE_HTML = ROOT / "original.html"  # always start from pristine original
 EXTRACTED = ROOT / "extracted"
 FIXED = ROOT / "fixed"
 
-# Manual rotation map (by slot index, 0-based).
+# Rotations indexed by SOURCE position (where photo currently is in original HTML).
 # Positive = counter-clockwise, negative = clockwise (PIL convention).
-# Determined by visual inspection of extracted/ folder.
-MANUAL_ROTATIONS = {
+SOURCE_ROTATIONS = {
     2: -90,  # 03_food_og_a — cerveza
     3: -90,  # 04_food_og_b — burger en canasta verde
     4: -90,  # 05_food_dirty — burger + cerveza
+    5: -90,  # 06_food_katsu_main — smashburger doble (girado en cámara)
     6: -90,  # 07_food_katsu_detail — katsu en caja kraft
     7: -90,  # 08_footer — fachada El Tap
+}
+
+# Move a photo from its source position in the HTML to a different slot in the final HTML.
+# Useful for swapping (e.g. promote footer photo to hero).
+SWAP_MAP = {
+    0: 7,  # bar interior (was hero) -> footer
+    7: 0,  # fachada El Tap (was footer) -> hero
 }
 
 DATA_URI_RE = re.compile(
@@ -88,43 +95,48 @@ def main():
     if len(matches) != len(SLOTS):
         print(f"WARNING: expected {len(SLOTS)} images, got {len(matches)}")
 
-    print(f"\n{'#':<3} {'Slot':<24} {'Original':<22} {'Final':<22} {'KB':>8}")
-    print("-" * 85)
+    print(f"\n{'src':>3} {'dst':>3} {'Slot (dest)':<24} {'Original':<22} {'Final':<22} {'KB':>8}")
+    print("-" * 95)
 
-    new_html = bytearray()
-    last_end = 0
-    for i, m in enumerate(matches):
-        slot = SLOTS[i] if i < len(SLOTS) else Slot(f"img_{i:02d}", 4, 3)
+    # Process each source photo with the destination slot's properties.
+    # processed[dst_index] = jpeg bytes ready for that slot in the final HTML.
+    processed: dict[int, bytes] = {}
+    for src_i, m in enumerate(matches):
+        dst_i = SWAP_MAP.get(src_i, src_i)
+        dst_slot = SLOTS[dst_i] if dst_i < len(SLOTS) else Slot(f"img_{dst_i:02d}", 4, 3)
         raw = base64.b64decode(m.group("data"))
         img = Image.open(io.BytesIO(raw))
         img = ImageOps.exif_transpose(img)
         ow, oh = img.size
-        was_vertical = oh > ow
 
-        ext = "jpg"
-        (EXTRACTED / f"{slot.name}.{ext}").write_bytes(encode_jpeg(img, quality=92))
+        (EXTRACTED / f"src{src_i+1:02d}.jpg").write_bytes(encode_jpeg(img, quality=92))
 
-        rotation = MANUAL_ROTATIONS.get(i, 0)
+        rotation = SOURCE_ROTATIONS.get(src_i, 0)
         if rotation:
             img = img.rotate(rotation, expand=True)
-        elif was_vertical:
-            img = img.rotate(-90, expand=True)
 
-        img = crop_to_aspect(img, slot.aspect_w, slot.aspect_h)
+        img = crop_to_aspect(img, dst_slot.aspect_w, dst_slot.aspect_h)
         fw, fh = img.size
 
         jpeg_bytes = encode_jpeg(img, quality=85)
-        (FIXED / f"{slot.name}.jpg").write_bytes(jpeg_bytes)
+        (FIXED / f"dst{dst_i+1:02d}_{dst_slot.name}.jpg").write_bytes(jpeg_bytes)
+        processed[dst_i] = jpeg_bytes
 
-        flag = f" [rot {rotation:+d}]" if rotation else (" [V->H]" if was_vertical else "")
-        print(f"{i+1:<3} {slot.name:<24} {f'{ow}x{oh}':<22} "
+        marks = []
+        if rotation: marks.append(f"rot {rotation:+d}")
+        if src_i != dst_i: marks.append(f"swap->#{dst_i+1}")
+        flag = f" [{', '.join(marks)}]" if marks else ""
+        print(f"{src_i+1:>3} {dst_i+1:>3} {dst_slot.name:<24} {f'{ow}x{oh}':<22} "
               f"{f'{fw}x{fh}{flag}':<22} {len(jpeg_bytes)/1024:>7.1f}")
 
+    # Walk the matches in HTML order; for each position i, write processed[i].
+    new_html = bytearray()
+    last_end = 0
+    for i, m in enumerate(matches):
         new_html.extend(html[last_end:m.start()])
-        new_uri = b"data:image/jpeg;base64," + base64.b64encode(jpeg_bytes)
+        new_uri = b"data:image/jpeg;base64," + base64.b64encode(processed[i])
         new_html.extend(new_uri)
         last_end = m.end()
-
     new_html.extend(html[last_end:])
     HTML_PATH.write_bytes(bytes(new_html))
 
