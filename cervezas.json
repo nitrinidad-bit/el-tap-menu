@@ -1,68 +1,162 @@
 [
   {
-    "id": "piel-otono",
+    "id": "guava-gose",
     "num": "01",
+    "brewery": "Collective Arts",
+    "name": "Guava Gose",
+    "stats": "Sour · 4.9%",
+    "price": "$8.50",
+    "color": "var(--chalk-pink)",
+    "breweryColor": "var(--chalk-yellow)",
+    "details": [
+      "Estilo: Sour Gose",
+      "ABV: 4.9%",
+      "Cervecería: Collective Arts",
+      "Notas: guayaba, sal de mar, acidez ligera"
+    ]
+  },
+  {
+    "id": "capitena",
+    "num": "02",
+    "brewery": "Cervezas Camacho",
+    "name": "Capitena",
+    "stats": "Light Lager · 4.6%",
+    "price": "$8.50",
+    "color": "var(--chalk-yellow)",
+    "breweryColor": "var(--chalk-pink)",
+    "details": [
+      "Estilo: Light Lager",
+      "ABV: 4.6%",
+      "Cervecería: Cervezas Camacho",
+      "Notas: ligera, refrescante, malta suave"
+    ]
+  },
+  {
+    "id": "botafumeiro",
+    "num": "03",
+    "brewery": "General Colliént",
+    "name": "Botafumeiro",
+    "stats": "NEIPA · 7.3%",
+    "price": "$8.50",
+    "color": "var(--chalk-orange)",
+    "breweryColor": "var(--chalk-blue)",
+    "details": [
+      "Estilo: NEIPA",
+      "ABV: 7.3%",
+      "Cervecería: General Colliént",
+      "Notas: lúpulo tropical, hazy, juicy"
+    ]
+  },
+  {
+    "id": "anestras",
+    "num": "04",
     "brewery": "Pura Vida",
-    "name": "Piel de Otoño",
-    "stats": "American IPA · 6.8%",
-    "price": "$8",
+    "name": "Anestras",
+    "stats": "English Best Bitter · 5.0%",
+    "price": "$8.50",
     "color": "var(--chalk-blue)",
     "breweryColor": "var(--chalk-pink)",
     "details": [
-      "Estilo: American IPA",
-      "ABV: 6.8%",
+      "Estilo: English Best Bitter",
+      "ABV: 5.0%",
       "Cervecería: Pura Vida (PR)",
-      "Notas: tropical, lúpulo americano, final amargo balanceado"
+      "Notas: malta tostada, lúpulo terroso, balanceada"
+    ]
+  },
+  {
+    "id": "sloppy-whoppy",
+    "num": "05",
+    "brewery": "One Well",
+    "name": "Sloppy Whoppy",
+    "stats": "Imperial DIPA · 9.4%",
+    "price": "$8.50",
+    "color": "var(--chalk-green)",
+    "breweryColor": "var(--chalk-yellow)",
+    "details": [
+      "Estilo: Imperial DIPA",
+      "ABV: 9.4%",
+      "Cervecería: One Well",
+      "Notas: doble lúpulo, alta densidad, final amargo intenso"
+    ]
+  },
+  {
+    "id": "black-portal",
+    "num": "06",
+    "brewery": "Dragon Stone Abbey",
+    "name": "Black Portal",
+    "stats": "Coffee Porter · 6%",
+    "price": "$8.50",
+    "color": "var(--chalk-white)",
+    "breweryColor": "var(--chalk-orange)",
+    "details": [
+      "Estilo: Coffee Porter",
+      "ABV: 6%",
+      "Cervecería: Dragon Stone Abbey",
+      "Notas: café tostado, chocolate, malta oscura"
+    ]
+  },
+  {
+    "id": "goat-10",
+    "num": "07",
+    "brewery": "Prison",
+    "name": "Goat 10",
+    "stats": "Premium Lager · 4.8%",
+    "price": "$7.00",
+    "color": "var(--chalk-yellow)",
+    "breweryColor": "var(--chalk-blue)",
+    "details": [
+      "Estilo: Premium Lager",
+      "ABV: 4.8%",
+      "Cervecería: Prison",
+      "Notas: clean, crisp, fácil de tomar"
+    ]
+  },
+  {
+    "id": "dia-libre",
+    "num": "08",
+    "brewery": "Miramar Brewing",
+    "name": "Día Libre",
+    "stats": "Fruit Beer · 5.5%",
+    "price": "$8.00",
+    "color": "var(--chalk-pink)",
+    "breweryColor": "var(--chalk-green)",
+    "details": [
+      "Estilo: Fruit Beer",
+      "ABV: 5.5%",
+      "Cervecería: Miramar Brewing (PR)",
+      "Notas: frutal, refrescante, ligera"
     ]
   },
   {
     "id": "cocotero",
-    "num": "02",
+    "num": "09",
     "brewery": "Box Lab",
     "name": "Cocotero",
-    "stats": "Pumpkin Spice Latte Stout · 4.8%",
-    "price": "$8",
+    "stats": "Milk Stout · 4.8%",
+    "price": "$8.00",
     "color": "var(--chalk-white)",
     "breweryColor": "var(--chalk-blue)",
     "details": [
-      "Estilo: Pumpkin Spice Latte Stout",
+      "Estilo: Milk Stout",
       "ABV: 4.8%",
-      "Cervecería: BOX LAB (PR)",
-      "Notas: calabaza, canela, nuez moscada, espresso",
-      "Edición de temporada"
+      "Cervecería: Box Lab (PR)",
+      "Notas: cremoso, lactosa, malta tostada"
     ]
   },
   {
-    "id": "gose",
-    "num": "03",
-    "brewery": "One Well",
-    "name": "Only Gose to Show",
-    "stats": "Sour · Lime Salt · 4.4%",
-    "price": "$8.50",
-    "color": "var(--chalk-green)",
+    "id": "two-hearts",
+    "num": "10",
+    "brewery": "Bell's Brewery",
+    "name": "Two Hearts",
+    "stats": "American IPA · 7%",
+    "price": "$8.00",
+    "color": "var(--chalk-orange)",
     "breweryColor": "var(--chalk-pink)",
     "details": [
-      "Estilo: Gose (Sour Lime Salt)",
-      "ABV: 4.4%",
-      "Cervecería: One Well",
-      "Notas: lima fresca, sal de mar, acidez ligera"
-    ]
-  },
-  {
-    "id": "monte-mar",
-    "num": "04",
-    "brewery": "Box Lab",
-    "name": "Monte y Mar",
-    "stats": "Amber Ale · 5.1% · 12oz",
-    "price": "$7.50",
-    "color": "var(--chalk-orange)",
-    "breweryColor": "var(--chalk-yellow)",
-    "details": [
-      "Estilo: Amber Ale",
-      "ABV: 5.1%",
-      "Tamaño: 12oz",
-      "Cervecería: BOX LAB (PR)",
-      "Notas: malta caramelo, lúpulo cítrico"
+      "Estilo: American IPA",
+      "ABV: 7%",
+      "Cervecería: Bell's Brewery",
+      "Notas: cítrico, lúpulo americano, balance limpio"
     ]
   }
 ]
